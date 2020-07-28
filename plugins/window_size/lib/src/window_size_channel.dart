@@ -38,6 +38,15 @@ const String _getWindowInfoMethod = 'getWindowInfo';
 /// Takes a frame array, as documented for the value of _frameKey.
 const String _setWindowFrameMethod = 'setWindowFrame';
 
+/// The method name to set the size of a window.
+///
+/// Takes a window size array, with the value is a list of two doubles:
+///   [width, height].
+///
+/// A value of zero for width or height is to be interpreted as
+/// unconstrained in that dimension.
+const String _setWindowSizeMethod = 'setWindowSize';
+
 /// The method name to set the minimum size of a window.
 ///
 /// Takes a window size array, with the value is a list of two doubles:
@@ -152,6 +161,12 @@ class WindowSizeChannel {
     assert(frame.isFinite, 'Cannot set window frame to a non-finite rect.');
     await _platformChannel.invokeMethod(_setWindowFrameMethod,
         [frame.left, frame.top, frame.width, frame.height]);
+  }
+
+  /// Sets the size of the window containing this Flutter instance.
+  void setWindowSize(Size size) async {
+    await _platformChannel
+        .invokeMethod(_setWindowSizeMethod, [size.width, size.height]);
   }
 
   /// Sets the minimum size of the window containing this Flutter instance.

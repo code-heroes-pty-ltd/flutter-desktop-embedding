@@ -21,6 +21,7 @@ static NSString *const kChannelName = @"flutter/windowsize";
 static NSString *const kGetScreenListMethod = @"getScreenList";
 static NSString *const kGetWindowInfoMethod = @"getWindowInfo";
 static NSString *const kSetWindowFrameMethod = @"setWindowFrame";
+static NSString *const kSetWindowSizeMethod = @"setWindowSize";
 static NSString *const kSetWindowMinimumSizeMethod = @"setWindowMinimumSize";
 static NSString *const kSetWindowMaximumSizeMethod = @"setWindowMaximumSize";
 static NSString *const kSetWindowTitleMethod = @"setWindowTitle";
@@ -142,6 +143,20 @@ static double ChannelRepresentationForMaxDimension(double size) {
         setFrame:GetFlippedRect(NSMakeRect(arguments[0].doubleValue, arguments[1].doubleValue,
                                            arguments[2].doubleValue, arguments[3].doubleValue))
          display:YES];
+    methodResult = nil;
+  } else if ([call.method isEqualToString:kSetWindowSizeMethod]) {
+    NSArray<NSNumber *> *arguments = call.arguments;
+    double width = arguments[0].doubleValue;
+    double height = arguments[1].doubleValue;
+
+    NSRect frame = [self.flutterView.window frame];
+    CGFloat xPos = NSWidth([[self.flutterView.window screen] frame])/2 - NSWidth(frame)/2;
+    CGFloat yPos = NSHeight([[self.flutterView.window screen] frame])/2 - NSHeight(frame)/2;
+
+    frame.origin.y = yPos;
+    frame.origin.x = xPos;
+    frame.size = NSMakeSize(width, height);
+    [self.flutterView.window setFrame: frame display: YES animate: YES];
     methodResult = nil;
   } else if ([call.method isEqualToString:kSetWindowMinimumSizeMethod]) {
     NSArray<NSNumber *> *arguments = call.arguments;
