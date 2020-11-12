@@ -156,7 +156,7 @@ static double ChannelRepresentationForMaxDimension(double size) {
     frame.origin.y = yPos;
     frame.origin.x = xPos;
     frame.size = NSMakeSize(width, height);
-    [self.flutterView.window setFrame: frame display: YES animate: YES];
+    [self.flutterView.window setFrame: frame display: YES animate: NO];
     methodResult = nil;
   } else if ([call.method isEqualToString:kSetWindowMinimumSizeMethod]) {
     NSArray<NSNumber *> *arguments = call.arguments;
